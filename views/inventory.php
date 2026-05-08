@@ -3,6 +3,7 @@ require __DIR__ . '/partials/app_shell_top.php';
 
 $success = flash_get('success');
 $error = flash_get('error');
+$no = 1;
 
 $rows = $pdo->query('SELECT id_barang, nama_barang, kode_aset, kondisi, stok, tgl_update FROM tbl_inventory ORDER BY id_barang DESC')->fetchAll();
 
@@ -54,7 +55,7 @@ function badge_class(string $kondisi): string
                 <?php else: ?>
                     <?php foreach ($rows as $r): ?>
                         <tr>
-                            <td><?php echo (int) $r['id_barang']; ?></td>
+                            <td><?php echo $no++; ?></td>
                             <td><?php echo htmlspecialchars((string) $r['nama_barang'], ENT_QUOTES); ?></td>
                             <td class="mono"><?php echo htmlspecialchars((string) $r['kode_aset'], ENT_QUOTES); ?></td>
                             <td>
