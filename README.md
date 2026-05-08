@@ -58,7 +58,3 @@ Lab Sentry is a web-based Laboratory Inventory Management System built with PHP 
 - **Login**: Access the dashboard.
 - **Inventory**: Navigate to the Inventory section to add or update items.
 - **Reports**: Generate summaries of current laboratory equipment.
-
-## License
-
-This project is open-source. Please check the repository for license details.
