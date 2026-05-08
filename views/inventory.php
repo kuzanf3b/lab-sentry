@@ -30,7 +30,7 @@ function badge_class(string $kondisi): string
             <h2 class="panel__title">Tabel Inventaris</h2>
             <div class="panel__subtitle">Data diambil dari database (tbl_inventory)</div>
         </div>
-        <a class="btn btn--cyan" href="index.php?page=inventory_form&mode=create">+ Tambah</a>
+        <a class="btn btn--cyan" href="<?php echo htmlspecialchars(url_for('index.php', ['page' => 'inventory_form', 'mode' => 'create']), ENT_QUOTES); ?>">+ Tambah</a>
     </div>
 
     <div class="tableWrap">
@@ -65,9 +65,9 @@ function badge_class(string $kondisi): string
                             <td><?php echo (int) $r['stok']; ?></td>
                             <td class="muted"><?php echo htmlspecialchars((string) $r['tgl_update'], ENT_QUOTES); ?></td>
                             <td class="table__actions">
-                                <a class="btn btn--yellow btn--sm" href="index.php?page=inventory_form&mode=edit&id=<?php echo urlencode((string) $r['id_barang']); ?>">Edit</a>
+                                <a class="btn btn--yellow btn--sm" href="<?php echo htmlspecialchars(url_for('index.php', ['page' => 'inventory_form', 'mode' => 'edit', 'id' => (string) $r['id_barang']]), ENT_QUOTES); ?>">Edit</a>
 
-                                <form class="inline" method="post" action="modules/inventory/delete.php" data-confirm="Hapus barang ini?" >
+                                <form class="inline" method="post" action="<?php echo htmlspecialchars(url_for('modules/inventory/delete.php'), ENT_QUOTES); ?>" data-confirm="Hapus barang ini?">
                                     <input type="hidden" name="id_barang" value="<?php echo (int) $r['id_barang']; ?>" />
                                     <button class="btn btn--pink btn--sm" type="submit">Hapus</button>
                                 </form>

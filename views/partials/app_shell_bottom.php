@@ -1,7 +1,8 @@
             </main>
-        </div>
-    </div>
+            </div>
+            </div>
 
-    <script src="assets/js/app.js"></script>
-</body>
-</html>
+            <script src="<?php echo htmlspecialchars(url_for('assets/js/app.js'), ENT_QUOTES); ?>"></script>
+            </body>
+
+            </html>

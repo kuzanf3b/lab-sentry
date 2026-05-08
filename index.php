@@ -1,9 +1,11 @@
 <?php
+
 declare(strict_types=1);
 
 session_start();
 
 require __DIR__ . '/config/koneksi.php';
+require __DIR__ . '/config/app.php';
 
 function redirect_to(string $url): never
 {
@@ -40,10 +42,10 @@ if ($page === '') {
 
 $publicPages = ['login', 'register'];
 if (!in_array($page, $publicPages, true) && !is_logged_in()) {
-    redirect_to('index.php?page=login');
+    redirect_to(url_for('index.php', ['page' => 'login']));
 }
 if (in_array($page, $publicPages, true) && is_logged_in()) {
-    redirect_to('index.php?page=dashboard');
+    redirect_to(url_for('index.php', ['page' => 'dashboard']));
 }
 
 $view = match ($page) {

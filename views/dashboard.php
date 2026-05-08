@@ -59,12 +59,11 @@ $values = array_map(static fn($r) => (int) $r['total_stok'], $trendRows);
         <canvas
             id="inventoryChart"
             data-labels='<?php echo htmlspecialchars(json_encode($labels, JSON_UNESCAPED_SLASHES), ENT_QUOTES); ?>'
-            data-values='<?php echo htmlspecialchars(json_encode($values, JSON_UNESCAPED_SLASHES), ENT_QUOTES); ?>'
-        ></canvas>
+            data-values='<?php echo htmlspecialchars(json_encode($values, JSON_UNESCAPED_SLASHES), ENT_QUOTES); ?>'></canvas>
     </div>
 </section>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
-<script src="assets/js/dashboard.js"></script>
+<script src="<?php echo htmlspecialchars(url_for('assets/js/dashboard.js'), ENT_QUOTES); ?>"></script>
 
 <?php require __DIR__ . '/partials/app_shell_bottom.php'; ?>

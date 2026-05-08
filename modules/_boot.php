@@ -1,9 +1,11 @@
 <?php
+
 declare(strict_types=1);
 
 session_start();
 
 require __DIR__ . '/../config/koneksi.php';
+require __DIR__ . '/../config/app.php';
 
 function redirect_to(string $url): never
 {
@@ -19,6 +21,6 @@ function flash_set(string $key, string $message): void
 function require_login(): void
 {
     if (!isset($_SESSION['user_id'])) {
-        redirect_to('../index.php?page=login');
+        redirect_to(url_for('index.php', ['page' => 'login']));
     }
 }

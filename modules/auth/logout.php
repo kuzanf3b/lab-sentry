@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 require __DIR__ . '/../_boot.php';
@@ -11,4 +12,4 @@ if (ini_get('session.use_cookies')) {
 
 session_destroy();
 
-redirect_to('../index.php?page=login');
+redirect_to(url_for('index.php', ['page' => 'login']));

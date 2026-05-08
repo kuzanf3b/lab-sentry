@@ -34,7 +34,7 @@ if ($isEdit) {
     $data = $row;
 }
 
-$action = $isEdit ? 'modules/inventory/update.php' : 'modules/inventory/insert.php';
+$action = $isEdit ? url_for('modules/inventory/update.php') : url_for('modules/inventory/insert.php');
 $title = $isEdit ? 'Edit Barang' : 'Tambah Barang';
 $subtitle = $isEdit ? 'Perbarui detail inventaris' : 'Masukkan data inventaris baru';
 ?>
@@ -92,7 +92,7 @@ $subtitle = $isEdit ? 'Perbarui detail inventaris' : 'Masukkan data inventaris b
         </label>
 
         <div class="form__actions">
-            <a class="btn btn--ghost" href="index.php?page=inventory">Kembali</a>
+            <a class="btn btn--ghost" href="<?php echo htmlspecialchars(url_for('index.php', ['page' => 'inventory']), ENT_QUOTES); ?>">Kembali</a>
             <button class="btn <?php echo $isEdit ? 'btn--yellow' : 'btn--cyan'; ?>" type="submit">
                 <?php echo $isEdit ? 'Simpan Perubahan' : 'Tambah Barang'; ?>
             </button>
