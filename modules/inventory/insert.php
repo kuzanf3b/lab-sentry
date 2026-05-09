@@ -17,17 +17,17 @@ $stok = (string) ($_POST['stok'] ?? '0');
 $allowedKondisi = ['Baik', 'Rusak', 'Perbaikan'];
 if ($nama_barang === '' || $kode_aset === '') {
     flash_set('error', 'Nama Barang dan Kode Aset wajib diisi.');
-    redirect_to(url_for('index.php', ['page' => 'inventory_form', 'mode' => 'create']));
+    redirect_to(url_for('index.php', ['page' => 'inventory']));
 }
 
 if (!in_array($kondisi, $allowedKondisi, true)) {
     flash_set('error', 'Kondisi tidak valid.');
-    redirect_to(url_for('index.php', ['page' => 'inventory_form', 'mode' => 'create']));
+    redirect_to(url_for('index.php', ['page' => 'inventory']));
 }
 
 if (!ctype_digit($stok)) {
     flash_set('error', 'Stok harus berupa angka (>= 0).');
-    redirect_to(url_for('index.php', ['page' => 'inventory_form', 'mode' => 'create']));
+    redirect_to(url_for('index.php', ['page' => 'inventory']));
 }
 
 try {
@@ -44,9 +44,9 @@ try {
 } catch (PDOException $e) {
     if ($e->getCode() === '23000') {
         flash_set('error', 'Kode Aset sudah digunakan.');
-        redirect_to(url_for('index.php', ['page' => 'inventory_form', 'mode' => 'create']));
+        redirect_to(url_for('index.php', ['page' => 'inventory']));
     }
 
     flash_set('error', 'Gagal menambah barang.');
-    redirect_to(url_for('index.php', ['page' => 'inventory_form', 'mode' => 'create']));
+    redirect_to(url_for('index.php', ['page' => 'inventory']));
 }

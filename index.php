@@ -35,6 +35,16 @@ function is_logged_in(): bool
     return isset($_SESSION['user_id']);
 }
 
+function badge_class(string $kondisi): string
+{
+    return match ($kondisi) {
+        'Baik' => 'badge--green',
+        'Perbaikan' => 'badge--yellow',
+        'Rusak' => 'badge--pink',
+        default => 'badge--muted',
+    };
+}
+
 $page = (string) ($_GET['page'] ?? '');
 if ($page === '') {
     $page = is_logged_in() ? 'dashboard' : 'login';

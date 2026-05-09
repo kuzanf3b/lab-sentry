@@ -6,16 +6,6 @@ $error = flash_get('error');
 $no = 1;
 
 $rows = $pdo->query('SELECT id_barang, nama_barang, kode_aset, kondisi, stok, tgl_update FROM tbl_inventory ORDER BY id_barang DESC')->fetchAll();
-
-function badge_class(string $kondisi): string
-{
-    return match ($kondisi) {
-        'Baik' => 'badge--green',
-        'Perbaikan' => 'badge--yellow',
-        'Rusak' => 'badge--pink',
-        default => 'badge--muted',
-    };
-}
 ?>
 
 <?php if ($success): ?>
@@ -31,7 +21,7 @@ function badge_class(string $kondisi): string
             <h2 class="panel__title">Tabel Inventaris</h2>
             <div class="panel__subtitle">Data diambil dari database (tbl_inventory)</div>
         </div>
-        <a class="btn btn--cyan" href="<?php echo htmlspecialchars(url_for('index.php', ['page' => 'inventory_form', 'mode' => 'create']), ENT_QUOTES); ?>">+ Tambah</a>
+        <button class="btn btn--cyan" type="button" data-modal-open="addStockModal">+ Tambah</button>
     </div>
 
     <div class="tableWrap">
@@ -80,5 +70,56 @@ function badge_class(string $kondisi): string
         </table>
     </div>
 </section>
+
+<div class="modal" id="addStockModal" aria-hidden="true">
+    <div class="modal__backdrop" data-modal-close></div>
+    <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="addStockTitle">
+        <div class="modal__header">
+            <div class="modal__title" id="addStockTitle">Tambah Stok</div>
+            <button class="modal__close" type="button" data-modal-close aria-label="Tutup">✕</button>
+        </div>
+
+        <form method="post" action="<?php echo htmlspecialchars(url_for('modules/inventory/insert.php'), ENT_QUOTES); ?>">
+            <div class="modal__body">
+                <label class="field">
+                    <span class="field__label">Nama Barang</span>
+                    <div class="field__control">
+                        <input class="input" type="text" name="nama_barang" placeholder="Contoh: Mikroskop" required />
+                    </div>
+                </label>
+
+                <label class="field">
+                    <span class="field__label">Kode Aset</span>
+                    <div class="field__control">
+                        <input class="input" type="text" name="kode_aset" placeholder="Contoh: LAB-001" required />
+                    </div>
+                </label>
+
+                <label class="field">
+                    <span class="field__label">Stok</span>
+                    <div class="field__control">
+                        <input class="input" type="number" min="0" name="stok" value="0" required />
+                    </div>
+                </label>
+
+                <label class="field">
+                    <span class="field__label">Kondisi</span>
+                    <div class="field__control">
+                        <select class="input" name="kondisi" required>
+                            <option value="Baik">Baik</option>
+                            <option value="Perbaikan">Perbaikan</option>
+                            <option value="Rusak">Rusak</option>
+                        </select>
+                    </div>
+                </label>
+            </div>
+
+            <div class="modal__footer">
+                <button class="btn btn--ghost" type="button" data-modal-close>Batal</button>
+                <button class="btn btn--cyan" type="submit">Tambah</button>
+            </div>
+        </form>
+    </div>
+</div>
 
 <?php require __DIR__ . '/partials/app_shell_bottom.php'; ?>
