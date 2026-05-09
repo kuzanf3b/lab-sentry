@@ -12,6 +12,10 @@
   --pink: #f16c93;
   --yellow: #f4d07e;
   --green: #a6e3a1;
+
+  --dur-1: 140ms;
+  --dur-2: 200ms;
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 * {
@@ -37,6 +41,11 @@ body {
 }
 a {
   color: inherit;
+}
+
+:where(a, button, input, select, textarea):focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 2px;
 }
 
 .muted {
@@ -221,9 +230,15 @@ a {
   border-radius: 12px;
   padding: 12px 14px;
   outline: none;
+  transition:
+    border-color var(--dur-1) var(--ease-out),
+    transform var(--dur-1) var(--ease-out);
 }
 .input:focus {
   border-color: var(--cyan);
+}
+.input:focus-visible {
+  transform: translateY(-1px);
 }
 select.input {
   appearance: none;
@@ -236,6 +251,7 @@ select.input {
   border: 1px solid var(--surface-0);
   background: var(--bg-1);
   margin: 0 0 14px 0;
+  animation: ui-fadeUp var(--dur-2) var(--ease-out) both;
 }
 .alert--error {
   border-color: var(--pink);
@@ -256,6 +272,19 @@ select.input {
   font-weight: 700;
   cursor: pointer;
   text-decoration: none;
+  transition:
+    transform var(--dur-1) var(--ease-out),
+    opacity var(--dur-1) var(--ease-out),
+    background-color var(--dur-1) var(--ease-out),
+    border-color var(--dur-1) var(--ease-out),
+    color var(--dur-1) var(--ease-out);
+}
+.btn:hover {
+  transform: translateY(-1px);
+}
+.btn:active {
+  transform: translateY(0);
+  opacity: 0.95;
 }
 .btn--block {
   width: 100%;
@@ -327,9 +356,14 @@ select.input {
   background: transparent;
   border: 1px solid transparent;
   position: relative;
+  transition:
+    background-color var(--dur-1) var(--ease-out),
+    color var(--dur-1) var(--ease-out),
+    transform var(--dur-1) var(--ease-out);
 }
 .sidebar__link:hover {
   background: rgba(0, 0, 0, 0.12);
+  transform: translateX(2px);
 }
 .sidebar__link.is-active {
   background: var(--bg-0);
@@ -429,23 +463,43 @@ select.input {
   gap: 18px;
 }
 
+body.modal-open {
+  overflow: hidden;
+}
+
 /* Modal */
 .modal {
   position: fixed;
   inset: 0;
-  display: none;
+  display: flex;
   align-items: center;
   justify-content: center;
   padding: 18px;
   z-index: 50;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity var(--dur-2) var(--ease-out),
+    visibility 0s linear var(--dur-2);
 }
 .modal.is-open {
-  display: flex;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition:
+    opacity var(--dur-2) var(--ease-out),
+    visibility 0s linear 0s;
 }
 .modal__backdrop {
   position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0.55);
+  opacity: 0;
+  transition: opacity var(--dur-2) var(--ease-out);
+}
+.modal.is-open .modal__backdrop {
+  opacity: 1;
 }
 .modal__dialog {
   position: relative;
@@ -455,6 +509,15 @@ select.input {
   border: 1px solid var(--surface-0);
   border-radius: 18px;
   overflow: hidden;
+  transform: translateY(10px) scale(0.98);
+  opacity: 0;
+  transition:
+    transform var(--dur-2) var(--ease-out),
+    opacity var(--dur-2) var(--ease-out);
+}
+.modal.is-open .modal__dialog {
+  transform: translateY(0) scale(1);
+  opacity: 1;
 }
 .modal__header {
   padding: 14px 16px;
@@ -477,6 +540,12 @@ select.input {
   display: grid;
   place-items: center;
   cursor: pointer;
+  transition:
+    transform var(--dur-1) var(--ease-out),
+    border-color var(--dur-1) var(--ease-out);
+}
+.modal__close:hover {
+  transform: translateY(-1px);
 }
 .modal__body {
   padding: 16px;
@@ -495,6 +564,7 @@ select.input {
   border: 1px solid var(--surface-0);
   border-radius: 16px;
   padding: 16px;
+  animation: ui-fadeUp var(--dur-2) var(--ease-out) both;
 }
 .panel__header {
   margin-bottom: 14px;
@@ -588,6 +658,35 @@ select.input {
 .table tbody td {
   padding: 12px;
   border-bottom: 1px solid var(--surface-0);
+  transition: background-color var(--dur-1) var(--ease-out);
+}
+.table tbody tr:hover td {
+  background: var(--surface-1);
+}
+
+@keyframes ui-fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html:focus-within {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 .table tbody tr:last-child td {
   border-bottom: none;

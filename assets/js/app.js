@@ -1,14 +1,53 @@
 (() => {
-  const openModal = (modal) => {
+  const returnFocusMap = new WeakMap();
+
+  const setBodyModalOpen = () => {
+    document.body.classList.add("modal-open");
+  };
+
+  const clearBodyModalOpenIfNeeded = () => {
+    if (document.querySelector(".modal.is-open")) return;
+    document.body.classList.remove("modal-open");
+  };
+
+  const focusFirstField = (modal) => {
+    const dialog = modal?.querySelector(".modal__dialog");
+    if (!(dialog instanceof HTMLElement)) return;
+
+    const focusable = dialog.querySelector(
+      'input:not([type="hidden"]), select, textarea, button, a[href], [tabindex]:not([tabindex="-1"])',
+    );
+
+    if (focusable instanceof HTMLElement) {
+      focusable.focus({ preventScroll: true });
+    }
+  };
+
+  const openModal = (modal, openerEl) => {
     if (!modal) return;
+
+    if (openerEl instanceof HTMLElement) {
+      returnFocusMap.set(modal, openerEl);
+    }
+
+    setBodyModalOpen();
     modal.classList.add("is-open");
     modal.setAttribute("aria-hidden", "false");
+
+    requestAnimationFrame(() => focusFirstField(modal));
   };
 
   const closeModal = (modal) => {
     if (!modal) return;
     modal.classList.remove("is-open");
     modal.setAttribute("aria-hidden", "true");
+
+    clearBodyModalOpenIfNeeded();
+
+    const opener = returnFocusMap.get(modal);
+    if (opener instanceof HTMLElement) {
+      requestAnimationFrame(() => opener.focus({ preventScroll: true }));
+    }
   };
 
   const fillEditStockModal = (triggerEl) => {
@@ -57,7 +96,7 @@
     }
 
     const modal = document.getElementById(openKey);
-    openModal(modal);
+    openModal(modal, openEl);
   });
 
   document.addEventListener("keydown", (e) => {
@@ -87,7 +126,8 @@
     e.preventDefault();
     pendingForm = form;
     if (confirmMsg) confirmMsg.textContent = message;
-    openModal(confirmModal);
+    const opener = document.activeElement;
+    openModal(confirmModal, opener instanceof HTMLElement ? opener : null);
   });
 
   okBtn?.addEventListener("click", () => {
