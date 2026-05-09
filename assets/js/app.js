@@ -11,22 +11,58 @@
     modal.setAttribute("aria-hidden", "true");
   };
 
+  const fillEditStockModal = (triggerEl) => {
+    const modal = document.getElementById("editStockModal");
+    if (!modal) return;
+
+    const id = triggerEl.getAttribute("data-stock-id") || "";
+    const nama = triggerEl.getAttribute("data-stock-nama") || "";
+    const kode = triggerEl.getAttribute("data-stock-kode") || "";
+    const stok = triggerEl.getAttribute("data-stock-stok") || "0";
+    const kondisi = triggerEl.getAttribute("data-stock-kondisi") || "Baik";
+
+    const idInput = modal.querySelector('input[name="id_barang"]');
+    const namaInput = modal.querySelector('input[name="nama_barang"]');
+    const kodeInput = modal.querySelector('input[name="kode_aset"]');
+    const stokInput = modal.querySelector('input[name="stok"]');
+    const kondisiSelect = modal.querySelector('select[name="kondisi"]');
+
+    if (idInput instanceof HTMLInputElement) idInput.value = id;
+    if (namaInput instanceof HTMLInputElement) namaInput.value = nama;
+    if (kodeInput instanceof HTMLInputElement) kodeInput.value = kode;
+    if (stokInput instanceof HTMLInputElement) stokInput.value = stok;
+    if (kondisiSelect instanceof HTMLSelectElement)
+      kondisiSelect.value = kondisi;
+  };
+
   document.addEventListener("click", (e) => {
     const t = e.target;
     if (!(t instanceof HTMLElement)) return;
 
     const closeEl = t.closest("[data-modal-close]");
     if (closeEl) {
-      const modal = t.closest(".modal");
+      const modal = closeEl.closest(".modal");
       closeModal(modal);
       return;
     }
 
-    const openKey = t.getAttribute("data-modal-open");
-    if (openKey) {
-      const modal = document.getElementById(openKey);
-      openModal(modal);
+    const openEl = t.closest("[data-modal-open]");
+    if (!openEl) return;
+
+    const openKey = openEl.getAttribute("data-modal-open");
+    if (!openKey) return;
+
+    if (openKey === "editStockModal") {
+      fillEditStockModal(openEl);
     }
+
+    const modal = document.getElementById(openKey);
+    openModal(modal);
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key !== "Escape") return;
+    document.querySelectorAll(".modal.is-open").forEach((m) => closeModal(m));
   });
 
   // Confirmation modal for forms with data-confirm

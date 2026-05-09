@@ -135,3 +135,10 @@ $pieValues = [(int) $stats['baik'], (int) $stats['perbaikan'], (int) $stats['rus
         </div>
     </section>
 </section>
+
+<script src="<?php echo htmlspecialchars(url_for('assets/vendor/chartjs/chart.umd.min.js'), ENT_QUOTES); ?>"></script>
+<script src="<?php echo htmlspecialchars(url_for('assets/js/dashboard.js'), ENT_QUOTES); ?>"></script>
+
+<?php
+require __DIR__ . '/partials/app_shell_bottom.php';
+?>

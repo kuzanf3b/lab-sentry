@@ -10,6 +10,15 @@ $success = flash_get('success');
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Lab Sentry - Register</title>
     <link rel="stylesheet" href="<?php echo htmlspecialchars(url_for('assets/css/style.css'), ENT_QUOTES); ?>" />
+    <script>
+        window.tailwind = window.tailwind || {};
+        window.tailwind.config = {
+            corePlugins: {
+                preflight: false
+            },
+        };
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body class="auth-body">

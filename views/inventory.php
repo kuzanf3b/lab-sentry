@@ -56,7 +56,17 @@ $rows = $pdo->query('SELECT id_barang, nama_barang, kode_aset, kondisi, stok, tg
                             <td><?php echo (int) $r['stok']; ?></td>
                             <td class="muted"><?php echo htmlspecialchars((string) $r['tgl_update'], ENT_QUOTES); ?></td>
                             <td class="table__actions">
-                                <a class="btn btn--yellow btn--sm" href="<?php echo htmlspecialchars(url_for('index.php', ['page' => 'inventory_form', 'mode' => 'edit', 'id' => (string) $r['id_barang']]), ENT_QUOTES); ?>">Edit</a>
+                                <button
+                                    class="btn btn--yellow btn--sm"
+                                    type="button"
+                                    data-modal-open="editStockModal"
+                                    data-stock-id="<?php echo htmlspecialchars((string) $r['id_barang'], ENT_QUOTES); ?>"
+                                    data-stock-nama="<?php echo htmlspecialchars((string) $r['nama_barang'], ENT_QUOTES); ?>"
+                                    data-stock-kode="<?php echo htmlspecialchars((string) $r['kode_aset'], ENT_QUOTES); ?>"
+                                    data-stock-stok="<?php echo htmlspecialchars((string) $r['stok'], ENT_QUOTES); ?>"
+                                    data-stock-kondisi="<?php echo htmlspecialchars((string) $r['kondisi'], ENT_QUOTES); ?>">
+                                    Edit
+                                </button>
 
                                 <form class="inline" method="post" action="<?php echo htmlspecialchars(url_for('modules/inventory/delete.php'), ENT_QUOTES); ?>" data-confirm="Hapus barang ini?">
                                     <input type="hidden" name="id_barang" value="<?php echo (int) $r['id_barang']; ?>" />
@@ -117,6 +127,59 @@ $rows = $pdo->query('SELECT id_barang, nama_barang, kode_aset, kondisi, stok, tg
             <div class="modal__footer">
                 <button class="btn btn--ghost" type="button" data-modal-close>Batal</button>
                 <button class="btn btn--cyan" type="submit">Tambah</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal" id="editStockModal" aria-hidden="true">
+    <div class="modal__backdrop" data-modal-close></div>
+    <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="editStockTitle">
+        <div class="modal__header">
+            <div class="modal__title" id="editStockTitle">Edit Stok</div>
+            <button class="modal__close" type="button" data-modal-close aria-label="Tutup">✕</button>
+        </div>
+
+        <form method="post" action="<?php echo htmlspecialchars(url_for('modules/inventory/update.php'), ENT_QUOTES); ?>">
+            <input type="hidden" name="id_barang" value="" />
+
+            <div class="modal__body">
+                <label class="field">
+                    <span class="field__label">Nama Barang</span>
+                    <div class="field__control">
+                        <input class="input" type="text" name="nama_barang" required />
+                    </div>
+                </label>
+
+                <label class="field">
+                    <span class="field__label">Kode Aset</span>
+                    <div class="field__control">
+                        <input class="input" type="text" name="kode_aset" required />
+                    </div>
+                </label>
+
+                <label class="field">
+                    <span class="field__label">Stok</span>
+                    <div class="field__control">
+                        <input class="input" type="number" min="0" name="stok" required />
+                    </div>
+                </label>
+
+                <label class="field">
+                    <span class="field__label">Kondisi</span>
+                    <div class="field__control">
+                        <select class="input" name="kondisi" required>
+                            <option value="Baik">Baik</option>
+                            <option value="Perbaikan">Perbaikan</option>
+                            <option value="Rusak">Rusak</option>
+                        </select>
+                    </div>
+                </label>
+            </div>
+
+            <div class="modal__footer">
+                <button class="btn btn--ghost" type="button" data-modal-close>Batal</button>
+                <button class="btn btn--cyan" type="submit">Simpan</button>
             </div>
         </form>
     </div>
