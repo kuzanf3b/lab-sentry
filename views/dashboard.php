@@ -60,7 +60,6 @@ $pieValues = [(int) $stats['baik'], (int) $stats['perbaikan'], (int) $stats['rus
             </div>
         </div>
         <div class="dashTotal__value"><?php echo $totalStock; ?></div>
-        <div class="dashTotal__meta">Items: <?php echo (int) $stats['total']; ?></div>
     </div>
 </section>
 

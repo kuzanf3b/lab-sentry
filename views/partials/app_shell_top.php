@@ -57,11 +57,12 @@ $username = (string) ($_SESSION['username'] ?? '');
             </nav>
 
             <div class="sidebar__footer">
-                <div class="sidebar__user">
-                    <div class="sidebar__userLabel">Logged in as</div>
-                    <div class="sidebar__userName"><?php echo htmlspecialchars($username, ENT_QUOTES); ?></div>
-                </div>
-                <a class="btn btn--pink btn--block" href="<?php echo htmlspecialchars(url_for('modules/auth/logout.php'), ENT_QUOTES); ?>">Logout</a>
+                <a class="btn btn--pink btn--block sidebar__logoutBtn" href="<?php echo htmlspecialchars(url_for('modules/auth/logout.php'), ENT_QUOTES); ?>">
+                    <span aria-hidden="true">
+                        <img class="btn__iconImg" src="<?php echo htmlspecialchars(url_for('assets/img/logout-icon.png'), ENT_QUOTES); ?>" alt="" />
+                    </span>
+                    <span>Logout</span>
+                </a>
             </div>
         </aside>
 

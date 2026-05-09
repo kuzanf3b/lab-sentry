@@ -286,6 +286,13 @@ select.input {
   transform: translateY(0);
   opacity: 0.95;
 }
+
+.btn__iconImg {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  display: block;
+}
 .btn--block {
   width: 100%;
 }
@@ -399,6 +406,11 @@ select.input {
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+
+.sidebar__logoutBtn {
+  justify-content: flex-start;
+  color: #fff;
 }
 .sidebar__user {
   background: rgba(0, 0, 0, 0.12);
@@ -745,6 +757,7 @@ body.modal-open {
 
 /* Dashboard */
 .dashTop {
+  margin-top: 25px;
   display: grid;
   grid-template-columns: 1.7fr 0.8fr;
   gap: 18px;
@@ -787,9 +800,9 @@ body.modal-open {
 .dashHello__artImg {
   width: 230px;
   height: auto;
-  display: block;
-  object-fit: contain;
+  position: absolute;
   opacity: 0.95;
+  border-radius: 0 0 18px 0px;
 }
 
 .dashTotal {
@@ -810,7 +823,7 @@ body.modal-open {
 }
 .dashTotal__label {
   font-weight: 800;
-  font-size: 13px;
+  font-size: 16px;
   color: var(--text);
 }
 .dashTotal__icon {
