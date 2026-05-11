@@ -10,6 +10,7 @@ $username = (string) ($_SESSION['username'] ?? '');
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Lab Sentry</title>
     <link rel="stylesheet" href="<?php echo htmlspecialchars(url_for('assets/css/style.css'), ENT_QUOTES); ?>" />
+    <link rel="icon" type="image/png" href="<?php echo htmlspecialchars(url_for('assets/img/batman-logo.png'), ENT_QUOTES); ?>">
     <script>
         window.tailwind = window.tailwind || {};
         window.tailwind.config = {

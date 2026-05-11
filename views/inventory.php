@@ -3,9 +3,30 @@ require __DIR__ . '/partials/app_shell_top.php';
 
 $success = flash_get('success');
 $error = flash_get('error');
-$no = 1;
 
-$rows = $pdo->query('SELECT id_barang, nama_barang, kode_aset, kondisi, stok, tgl_update FROM tbl_inventory ORDER BY id_barang DESC')->fetchAll();
+$perPage = 10;
+$currentPage = (int) ($_GET['p'] ?? 1);
+if ($currentPage < 1) {
+    $currentPage = 1;
+}
+
+$totalRows = (int) $pdo->query('SELECT COUNT(*) FROM tbl_inventory')->fetchColumn();
+$totalPages = $totalRows === 0 ? 1 : (int) ceil($totalRows / $perPage);
+if ($currentPage > $totalPages) {
+    $currentPage = $totalPages;
+}
+
+$offset = ($currentPage - 1) * $perPage;
+$no = $offset + 1;
+
+$stmt = $pdo->prepare('SELECT id_barang, nama_barang, kode_aset, kondisi, stok, tgl_update FROM tbl_inventory ORDER BY id_barang DESC LIMIT :limit OFFSET :offset');
+$stmt->bindValue(':limit', $perPage, PDO::PARAM_INT);
+$stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+$stmt->execute();
+$rows = $stmt->fetchAll();
+
+$startItem = $totalRows === 0 ? 0 : $offset + 1;
+$endItem = $totalRows === 0 ? 0 : min($offset + $perPage, $totalRows);
 ?>
 
 <?php if ($success): ?>
@@ -79,6 +100,55 @@ $rows = $pdo->query('SELECT id_barang, nama_barang, kode_aset, kondisi, stok, tg
             </tbody>
         </table>
     </div>
+
+    <?php if ($totalRows > 0): ?>
+        <div class="pager" aria-label="Pagination">
+            <div class="pager__meta muted">
+                Menampilkan <?php echo (int) $startItem; ?>–<?php echo (int) $endItem; ?> dari <?php echo (int) $totalRows; ?> data
+            </div>
+
+            <?php if ($totalPages > 1): ?>
+                <div class="pager__controls">
+                    <?php if ($currentPage > 1): ?>
+                        <a class="btn btn--ghost btn--sm pager__link" href="<?php echo htmlspecialchars(url_for('index.php', ['page' => 'inventory', 'p' => $currentPage - 1]), ENT_QUOTES); ?>">‹ Prev</a>
+                    <?php endif; ?>
+
+                    <?php
+                    $window = 2;
+                    $pagesToShow = [1, $totalPages];
+                    for ($i = max(1, $currentPage - $window); $i <= min($totalPages, $currentPage + $window); $i++) {
+                        $pagesToShow[] = $i;
+                    }
+                    $pagesToShow = array_values(array_unique($pagesToShow));
+                    sort($pagesToShow);
+
+                    $lastPage = 0;
+                    foreach ($pagesToShow as $p):
+                        if ($p - $lastPage > 1): ?>
+                            <span class="pager__ellipsis" aria-hidden="true">…</span>
+                        <?php
+                        endif;
+
+                        $isActive = $p === $currentPage;
+                        ?>
+                        <a
+                            class="btn btn--ghost btn--sm pager__link <?php echo $isActive ? 'is-active' : ''; ?>"
+                            href="<?php echo htmlspecialchars(url_for('index.php', ['page' => 'inventory', 'p' => $p]), ENT_QUOTES); ?>"
+                            <?php echo $isActive ? 'aria-current="page"' : ''; ?>>
+                            <?php echo (int) $p; ?>
+                        </a>
+                    <?php
+                        $lastPage = $p;
+                    endforeach;
+                    ?>
+
+                    <?php if ($currentPage < $totalPages): ?>
+                        <a class="btn btn--ghost btn--sm pager__link" href="<?php echo htmlspecialchars(url_for('index.php', ['page' => 'inventory', 'p' => $currentPage + 1]), ENT_QUOTES); ?>">Next ›</a>
+                    <?php endif; ?>
+                </div>
+            <?php endif; ?>
+        </div>
+    <?php endif; ?>
 </section>
 
 <div class="modal" id="addStockModal" aria-hidden="true">
@@ -125,8 +195,8 @@ $rows = $pdo->query('SELECT id_barang, nama_barang, kode_aset, kondisi, stok, tg
             </div>
 
             <div class="modal__footer">
-                <button class="btn btn--ghost" type="button" data-modal-close>Batal</button>
-                <button class="btn btn--cyan" type="submit">Tambah</button>
+                <button class="btn btn--ghost" type="button" data-modal-close>BATAL</button>
+                <button class="btn btn--cyan" type="submit">TAMBAH</button>
             </div>
         </form>
     </div>
@@ -178,8 +248,8 @@ $rows = $pdo->query('SELECT id_barang, nama_barang, kode_aset, kondisi, stok, tg
             </div>
 
             <div class="modal__footer">
-                <button class="btn btn--ghost" type="button" data-modal-close>Batal</button>
-                <button class="btn btn--cyan" type="submit">Simpan</button>
+                <button class="btn btn--ghost" type="button" data-modal-close>BATAL</button>
+                <button class="btn btn--cyan" type="submit">SIMPAN</button>
             </div>
         </form>
     </div>

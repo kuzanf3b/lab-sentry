@@ -7,6 +7,8 @@
   --text: #e6e8f2;
   --text-2: #8f92a8;
 
+  --bg-border: #54555a;
+
   --cyan: #47b8cf;
   --purple: #b98ef5;
   --pink: #f16c93;
@@ -76,6 +78,7 @@ a {
 .authCard {
   width: 100%;
   max-width: 980px;
+  height: 580px;
   display: grid;
   grid-template-columns: 1fr 1fr;
   background: var(--surface-1);
@@ -124,6 +127,7 @@ a {
 .authCard__accentTitle {
   margin: 0;
   font-size: 40px;
+  color: var(--text);
   line-height: 1.05;
   font-weight: 900;
   letter-spacing: -0.02em;
@@ -132,6 +136,8 @@ a {
   margin: 0;
   font-size: 14px;
   opacity: 0.9;
+  line-height: 1.8;
+  color: var(--text);
 }
 
 .authCard__form {
@@ -302,8 +308,9 @@ select.input {
   font-size: 13px;
 }
 .btn--ghost {
+  padding: 8px 24px;
   background: transparent;
-  border: 1px solid var(--surface-0);
+  border: 1px solid var(--text);
   color: var(--text);
 }
 
@@ -313,7 +320,7 @@ select.input {
 }
 .btn--purple {
   background: var(--purple);
-  color: var(--bg-0);
+  color: var(--text);
 }
 .btn--pink {
   background: var(--pink);
@@ -658,8 +665,8 @@ body.modal-open {
 .table thead th {
   position: sticky;
   top: 0;
-  background: var(--bg-1);
-  color: var(--text-2);
+  background: var(--text-2);
+  color: var(--text);
   text-align: left;
   font-size: 12px;
   letter-spacing: 0.06em;
@@ -714,6 +721,33 @@ body.modal-open {
 }
 .inline {
   display: inline;
+}
+
+/* Pagination */
+.pager {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.pager__controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.pager__ellipsis {
+  color: var(--text-2);
+  font-weight: 900;
+  padding: 0 6px;
+}
+.pager__link.is-active {
+  pointer-events: none;
+  background: var(--surface-0);
+  border: 1px solid var(--surface-0);
+  color: var(--text);
 }
 
 /* Badges */
